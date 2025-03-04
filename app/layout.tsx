@@ -41,6 +41,7 @@ export default function RootLayout({
           media="(prefers-color-scheme: light)"
         />
       </head>
+      
       <body
         className={`${inter.className} ${spaceGrotesk.variable} antialiased`}
       >
