@@ -1,7 +1,7 @@
 import React from 'react';
 import localFont from 'next/font/local';
 import ThemeProvider from '@/app/context/Theme';
-import Navbar from '@components/navigation/navbar';
+import Navbar from '@/components';
 import './globals.scss';
 
 export const metadata = {
