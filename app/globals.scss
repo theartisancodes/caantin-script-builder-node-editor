@@ -23,6 +23,10 @@
     @apply bg-light-800 dark:dark-gradient;
   }
 
+  .background-light800_dark100 {
+    @apply bg-light-800 dark:bg-dark-100;
+  }
+
   .background-light800_dark400 {
     @apply bg-light-800 dark:bg-dark-400 !important;
   }
@@ -212,7 +216,7 @@
   }
 
   .primary-gradient {
-    background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%);
+    background: linear-gradient(129deg, #003366 0%, #0077b6 100%);
   }
 
   .dark-gradient {
@@ -248,6 +252,10 @@
 
   .flex-start {
     @apply flex justify-start items-center;
+  }
+
+  .flex-end {
+    @apply flex justify-end items-center;
   }
 
   .card-wrapper {

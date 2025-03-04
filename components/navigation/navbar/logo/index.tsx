@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
-
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Logo = () => {
   const { resolvedTheme } = useTheme();
@@ -18,14 +17,14 @@ const Logo = () => {
 
   return (
     <Link
-      href="/"
+      href="/public"
       className="flex cursor-pointer items-center gap-1 max-sm:hidden"
     >
       <Image
         src={
           resolvedTheme === 'dark'
-            ? '/images/logo-dark.svg'
-            : '/images/logo-light.svg'
+            ? '/images/logo-white.svg'
+            : '/images/logo-blue.svg'
         }
         alt="Logo"
         width={152}

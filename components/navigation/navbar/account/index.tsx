@@ -6,14 +6,14 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
 const Account = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Avatar className="h-[35px] w-[35px]">
+        <Avatar className="h-[30px] w-[30px]">
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>JN</AvatarFallback>
         </Avatar>

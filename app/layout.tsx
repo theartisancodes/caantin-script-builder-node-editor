@@ -1,7 +1,7 @@
 import React from 'react';
 import localFont from 'next/font/local';
 import ThemeProvider from '@/app/context/Theme';
-import Navbar from '@/components';
+import Navbar from '@/components/navigation/navbar';
 import './globals.scss';
 
 export const metadata = {
@@ -41,7 +41,7 @@ export default function RootLayout({
           media="(prefers-color-scheme: light)"
         />
       </head>
-      
+
       <body
         className={`${inter.className} ${spaceGrotesk.variable} antialiased`}
       >
@@ -51,7 +51,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
           {children}
         </ThemeProvider>
       </body>
