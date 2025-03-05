@@ -75,7 +75,7 @@ export interface NodePropertiesPanelProps {
 }
 
 export interface NodeData {
-  isDark: boolean;
+  isDark?: boolean;
   message?: string;
   question?: string;
   options?: string[];

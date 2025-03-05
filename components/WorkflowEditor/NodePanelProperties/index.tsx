@@ -6,6 +6,7 @@ import { Input } from '@ui/input';
 import { Label } from '@ui/label';
 import { Textarea } from '@ui/textarea';
 import { PlusCircle, X } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import NodePreview from '@components/WorkflowEditor/NodePreview';
 import { NodeData, NodePropertiesPanelProps } from '@/types';
 
@@ -15,7 +16,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
 }) => {
   const [originalData, setOriginalData] = useState<NodeData>(node.data);
   const [nodeData, setNodeData] = useState<NodeData>(node.data);
-
+  const { resolvedTheme } = useTheme();
   useEffect(() => {
     setNodeData(node.data);
     setOriginalData(node.data);
@@ -85,7 +86,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
             </Label>
             <div className="flex justify-center py-4">
               <div className="origin-center scale-90 transform">
-                <NodePreview type={node.type} data={nodeData} />
+                <NodePreview type={node.type} data={nodeData} theme={resolvedTheme} />
               </div>
             </div>
           </div>

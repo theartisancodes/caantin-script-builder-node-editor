@@ -1,5 +1,6 @@
 'use client';
 
+import { useTheme } from 'next-themes';
 import { Handle, Position } from 'reactflow';
 import { flowColors, nodeConfig } from '@/constants';
 import { NodeType } from '@/types';
@@ -16,13 +17,16 @@ interface DynamicNodeProps {
     entity?: string;
     details?: string;
     destination?: string;
-    isDark: boolean;
+    isDark?: boolean;
   };
   type: NodeType;
 }
 
 const Node = ({ data, type }: DynamicNodeProps) => {
-  const isDark = data.isDark;
+  const { theme, systemTheme } = useTheme();
+  const currentTheme = theme === 'system' ? systemTheme : theme;
+  const isDark = currentTheme === 'dark';
+
   const config = nodeConfig[type];
   const IconComponent = config.icon;
   const colors = flowColors[type] || flowColors.greeting;
@@ -37,7 +41,6 @@ const Node = ({ data, type }: DynamicNodeProps) => {
     : `${hasOptionalColors(config.color.light) ? config.color.light.optionBorder : ''} 
        ${hasOptionalColors(config.color.light) ? config.color.light.optionBg : ''}`;
 
-  // Safely access code background color
   const codeColorClass = isDark
     ? hasCodeBg(config.color.dark)
       ? config.color.dark.codeBg
@@ -164,7 +167,6 @@ const Node = ({ data, type }: DynamicNodeProps) => {
   );
 };
 
-// Type guard functions to check if optional properties exist
 function hasOptionalColors(
   colorObj: any
 ): colorObj is { optionBorder: string; optionBg: string } {

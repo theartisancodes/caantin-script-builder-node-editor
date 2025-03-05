@@ -8,11 +8,10 @@ import {
   Info,
   MessageCircle
 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { NodeData, NodeType } from '@/types';
 
-// Create a more comprehensive type that includes all possible properties
 interface CompleteNodeData extends NodeData {
-  // Add the missing properties
   condition?: string;
   title?: string;
   content?: string;
@@ -22,11 +21,16 @@ interface CompleteNodeData extends NodeData {
   destination?: string;
 }
 
-const NodePreview: React.FC<{
+interface NodePreviewProps {
   type: NodeType;
   data: CompleteNodeData;
-}> = ({ type, data }) => {
-  const isDark = data.isDark;
+  theme?: string;
+}
+
+const NodePreview = ({ type, data, theme }: NodePreviewProps) => {
+  const { theme: systemTheme } = useTheme();
+  const currentTheme = theme || systemTheme;
+  const isDark = currentTheme === 'dark';
 
   const getNodeStyle = () => {
     switch (type) {

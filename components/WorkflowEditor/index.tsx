@@ -61,7 +61,6 @@ const nodeTypes = {
   transfer: TransferNodeComponent
 };
 
-// Get edge style based on node type
 const getEdgeStyle = (sourceNode: any, targetNode: any, isDark: boolean) => {
   if (!sourceNode) return { stroke: '#64748b', strokeWidth: 2 };
 
@@ -90,8 +89,9 @@ const getNodeColors = (nodeType: NodeType, isDark: boolean) => {
 };
 
 const WorkflowEditor = () => {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const { theme, systemTheme, resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
   const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
@@ -167,8 +167,7 @@ const WorkflowEditor = () => {
         return {
           ...node,
           data: {
-            ...node.data,
-            isDark
+            ...node.data
           },
           style: {
             ...node.style,
@@ -181,7 +180,6 @@ const WorkflowEditor = () => {
       })
     );
   }, [isDark, setNodes]);
-
 
   const nodeMap = useMemo(() => {
     return nodes.reduce(
