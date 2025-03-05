@@ -1,4 +1,3 @@
-// app/(root)/workflows/page.tsx
 import React from 'react';
 import WorkflowEditor from '@/components/WorkflowEditor';
 

@@ -12,7 +12,8 @@ import { NodeData, NodePropertiesPanelProps } from '@/types';
 
 const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
   node,
-  onUpdate
+  onUpdate,
+  onClose
 }) => {
   const [originalData, setOriginalData] = useState<NodeData>(node.data);
   const [nodeData, setNodeData] = useState<NodeData>(node.data);
@@ -24,6 +25,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
 
   const handleCancel = () => {
     setNodeData(originalData);
+    if (onClose) onClose();
   };
 
   const handleSave = () => {
@@ -86,7 +88,11 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
             </Label>
             <div className="flex justify-center py-4">
               <div className="origin-center scale-90 transform">
-                <NodePreview type={node.type} data={nodeData} theme={resolvedTheme} />
+                <NodePreview
+                  type={node.type}
+                  data={nodeData}
+                  theme={resolvedTheme}
+                />
               </div>
             </div>
           </div>
@@ -300,7 +306,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
         </div>
       </div>
 
-      <footer className="flex-between sticky bottom-0 mt-4 flex justify-end gap-2 border-t border-border pt-4">
+      <footer className="flex-between sticky bottom-0 mr-4 mt-4 flex justify-end gap-2 border-t border-border pt-4">
         <Button variant="outline" onClick={handleCancel}>
           Cancel
         </Button>

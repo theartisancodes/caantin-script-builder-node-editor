@@ -20,7 +20,7 @@ import { defaultNodeData, flowColors } from '@/constants';
 import NodePanel from './NodePanel';
 import Nodes from './Nodes';
 import { Button } from '@/components/ui/button';
-import { Node, NodeType } from '@/types';
+import { Node, NodeData, NodeType } from '@/types';
 
 interface NodeProps {
   id: string;
@@ -89,7 +89,7 @@ const getNodeColors = (nodeType: NodeType, isDark: boolean) => {
 };
 
 const WorkflowEditor = () => {
-  const { theme, systemTheme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
 
   const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
@@ -191,7 +191,6 @@ const WorkflowEditor = () => {
     );
   }, [nodes]);
 
-  // Separate effect for updating edge styles
   useEffect(() => {
     setEdges((eds) =>
       eds.map((edge) => {
@@ -217,32 +216,36 @@ const WorkflowEditor = () => {
     setShowPropertiesPanel(true);
   };
 
-  const updateNodeData = (nodeId: string, data: any) => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === nodeId) {
-          const nodeType = node.type as NodeType;
-          const colors = getNodeColors(nodeType, isDark);
+  const handleNodeUpdate = useCallback(
+    (data: NodeData) => {
+      if (!selectedNode) return;
 
-          return {
-            ...node,
-            data: {
-              ...data,
-              isDark,
-              nodeType: node.type
-            },
-            style: {
-              ...node.style,
-              background: colors.background,
-              backgroundColor: colors.background,
-              borderColor: colors.border
-            }
-          };
-        }
-        return node;
-      })
-    );
-  };
+      setNodes((nds) =>
+        nds.map((node) => {
+          if (node.id === selectedNode.id) {
+            const nodeType = node.type as NodeType;
+            const colors = getNodeColors(nodeType, isDark);
+
+            return {
+              ...node,
+              data: {
+                ...data,
+                nodeType: node.type
+              },
+              style: {
+                ...node.style,
+                background: colors.background,
+                backgroundColor: colors.background,
+                borderColor: colors.border
+              }
+            };
+          }
+          return node;
+        })
+      );
+    },
+    [selectedNode, setNodes, isDark]
+  );
 
   return (
     <div className="relative flex h-full w-full bg-background">
@@ -302,10 +305,18 @@ const WorkflowEditor = () => {
                 <X size={18} />
               </Button>
             </div>
-            <NodePropertiesPanel
-              node={selectedNode}
-              onUpdate={(data) => updateNodeData(selectedNode.id, data)}
-            />
+            {showPropertiesPanel && selectedNode && (
+              <div className="h-full w-72 border-l border-border p-4">
+                <NodePropertiesPanel
+                  node={selectedNode}
+                  onUpdate={handleNodeUpdate}
+                  onClose={() => {
+                    setShowPropertiesPanel(false);
+                    setSelectedNode(null);
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
 

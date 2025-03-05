@@ -72,6 +72,7 @@ export type Node =
 export interface NodePropertiesPanelProps {
   node: Node;
   onUpdate: (_: any) => void;
+  onClose?: () => void;
 }
 
 export interface NodeData {
