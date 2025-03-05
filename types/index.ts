@@ -26,3 +26,15 @@ export interface InformationNode {
 }
 
 export type Node = GreetingNode | QuestionNode | InformationNode;
+
+export enum WorkflowStatus {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED'
+}
+
+export enum WorkflowExecutionStatus {
+  PENDING = 'PENDING',
+  RUNNING = 'RUNNING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED'
+}

@@ -6,8 +6,8 @@ export const sidebarLinks = [
   },
   {
     imgURL: '/icons/script-builder.svg',
-    route: '/node-editor',
-    label: 'Node Editor'
+    route: '/workflows',
+    label: 'Workflows'
   },
   {
     imgURL: '/icons/pathfinder-white.svg',
