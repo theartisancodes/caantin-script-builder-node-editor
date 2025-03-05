@@ -1,25 +1,16 @@
-'use client';
+// app/(root)/workflows/page.tsx
+import React from 'react';
+import WorkflowEditor from '@/components/WorkflowEditor';
 
-import { Suspense } from 'react';
-import CreateWorkflowDialog from '@/app/(root)/workflows/_components/CreateWorkflowDialog';
-import UserWorkflows from '@/app/(root)/workflows/_components/UserWorkflows';
-import UserWorkflowSkeleton from '@/app/(root)/workflows/_components/UserWorkflowSkeleton';
-
-function Page() {
+const Workflow = () => {
   return (
-    <div className="flex h-full flex-1 flex-col">
-      <div className="flex justify-between">
-        <div className="flex flex-col">
-          <h1 className="text-3xl font-bold">Workflows</h1>
-          <p className="text-muted-foreground">Manage your workflows</p>
-        </div>
-        <CreateWorkflowDialog />
+    <div className="h-[80%]">
+      <div className="border-b p-4">
+        <h1 className="text-xl font-bold">Workflow Editor</h1>
       </div>
-      <div className="h-full py-6">
-        <UserWorkflows />
-      </div>
+      <WorkflowEditor />
     </div>
   );
-}
+};
 
-export default Page;
+export default Workflow;

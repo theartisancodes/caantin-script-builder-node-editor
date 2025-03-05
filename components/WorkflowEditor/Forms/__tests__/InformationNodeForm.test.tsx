@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import InformationNodeForm from '@components/ScriptBuilder/Forms/InformationNodeForm';
+import InformationNodeForm from '@components/WorkflowEditor/Forms/InformationNodeForm';
 
 describe('InformationNodeForm', () => {
   const mockData = {

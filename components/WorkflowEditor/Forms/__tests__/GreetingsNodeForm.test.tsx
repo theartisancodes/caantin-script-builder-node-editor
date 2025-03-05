@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import GreetingNodeForm from '@components/ScriptBuilder/Forms/GreetingsNodeForm';
+import GreetingNodeForm from '@components/WorkflowEditor/Forms/GreetingsNodeForm';
 
 describe('GreetingNodeForm', () => {
   const mockData = {

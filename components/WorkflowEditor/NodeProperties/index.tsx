@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { AlertCircle } from 'lucide-react';
-import GreetingsNodeForm from '@components/ScriptBuilder/Forms/GreetingsNodeForm';
-import InformationNodeForm from '@components/ScriptBuilder/Forms/InformationNodeForm';
-import QuestionNodeForm from '@components/ScriptBuilder/Forms/QuestionNodeForm';
-import NodePreview from '@components/ScriptBuilder/NodePreview';
+import GreetingsNodeForm from '@components/WorkflowEditor/Forms/GreetingsNodeForm';
+import InformationNodeForm from '@components/WorkflowEditor/Forms/InformationNodeForm';
+import QuestionNodeForm from '@components/WorkflowEditor/Forms/QuestionNodeForm';
+import NodePreview from '@components/WorkflowEditor/NodePreview';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Node, NodeType } from '@/types';

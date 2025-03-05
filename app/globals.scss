@@ -468,3 +468,47 @@ code {
     @apply bg-background text-foreground;
   }
 }
+
+/* app/globals.css (add this at the end of your existing styles) */
+
+/* ReactFlow Dark Mode Styles */
+.react-flow-dark .react-flow__node {
+  color: hsl(var(--foreground));
+}
+
+.react-flow-dark .react-flow__controls button {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+}
+
+.react-flow-dark .react-flow__controls button:hover {
+  background-color: hsl(var(--muted));
+}
+
+.react-flow-dark .react-flow__edge-path {
+  stroke: #94a3b8;
+}
+
+.react-flow-dark .react-flow__attribution {
+  color: hsl(var(--muted-foreground));
+}
+
+/* ReactFlow Light Mode Styles */
+.react-flow-light .react-flow__node {
+  color: hsl(var(--foreground));
+}
+
+.react-flow-light .react-flow__controls button {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+}
+
+.react-flow-light .react-flow__controls button:hover {
+  background-color: hsl(var(--muted));
+}
+
+.react-flow-light .react-flow__edge-path {
+  stroke: #64748b;
+}
