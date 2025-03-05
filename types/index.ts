@@ -75,8 +75,16 @@ export interface NodePropertiesPanelProps {
 }
 
 export interface NodeData {
+  isDark: boolean;
   message?: string;
   question?: string;
   options?: string[];
-  isDark?: boolean;
+
+  condition?: string;
+  title?: string;
+  content?: string;
+  operation?: string;
+  entity?: string;
+  details?: string;
+  destination?: string;
 }

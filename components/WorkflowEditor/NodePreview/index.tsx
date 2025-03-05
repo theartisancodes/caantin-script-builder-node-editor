@@ -10,9 +10,21 @@ import {
 } from 'lucide-react';
 import { NodeData, NodeType } from '@/types';
 
+// Create a more comprehensive type that includes all possible properties
+interface CompleteNodeData extends NodeData {
+  // Add the missing properties
+  condition?: string;
+  title?: string;
+  content?: string;
+  operation?: string;
+  entity?: string;
+  details?: string;
+  destination?: string;
+}
+
 const NodePreview: React.FC<{
   type: NodeType;
-  data: NodeData;
+  data: CompleteNodeData;
 }> = ({ type, data }) => {
   const isDark = data.isDark;
 

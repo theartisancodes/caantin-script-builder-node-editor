@@ -32,13 +32,19 @@ const Node = ({ data, type }: DynamicNodeProps) => {
     : `${config.color.light.border} ${config.color.light.bg}`;
 
   const optionColorClasses = isDark
-    ? `${config.color?.dark?.optionBorder || ''} ${config.color?.dark?.optionBg || ''}`
-    : `${config.color?.light?.optionBorder || ''} ${config.color?.light?.optionBg || ''}`;
+    ? `${hasOptionalColors(config.color.dark) ? config.color.dark.optionBorder : ''} 
+       ${hasOptionalColors(config.color.dark) ? config.color.dark.optionBg : ''}`
+    : `${hasOptionalColors(config.color.light) ? config.color.light.optionBorder : ''} 
+       ${hasOptionalColors(config.color.light) ? config.color.light.optionBg : ''}`;
 
+  // Safely access code background color
   const codeColorClass = isDark
-    ? config.color?.dark?.codeBg || ''
-    : config.color?.light?.codeBg || '';
-
+    ? hasCodeBg(config.color.dark)
+      ? config.color.dark.codeBg
+      : ''
+    : hasCodeBg(config.color.light)
+      ? config.color.light.codeBg
+      : '';
 
   const getHandleStyle = () => ({
     background: isDark ? colors.dark.handle : colors.light.handle,
@@ -157,5 +163,16 @@ const Node = ({ data, type }: DynamicNodeProps) => {
     </div>
   );
 };
+
+// Type guard functions to check if optional properties exist
+function hasOptionalColors(
+  colorObj: any
+): colorObj is { optionBorder: string; optionBg: string } {
+  return colorObj && 'optionBorder' in colorObj && 'optionBg' in colorObj;
+}
+
+function hasCodeBg(colorObj: any): colorObj is { codeBg: string } {
+  return colorObj && 'codeBg' in colorObj;
+}
 
 export default Node;
