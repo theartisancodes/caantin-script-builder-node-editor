@@ -17,7 +17,7 @@ const Logo = () => {
 
   return (
     <Link
-      href="/public"
+      href="/"
       className="flex cursor-pointer items-center gap-1 max-sm:hidden"
     >
       <Image
