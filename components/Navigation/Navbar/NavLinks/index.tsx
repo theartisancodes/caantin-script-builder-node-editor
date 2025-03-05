@@ -31,7 +31,7 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
             className={cn(
               isActive
                 ? 'primary-gradient rounded-lg text-light-900'
-                : 'text-dark300_light900 hover:bg-primary-300 hover:rounded-lg hover:text-light-900',
+                : 'text-dark300_light900 hover:bg-light-200 hover:rounded-lg dark:hover:bg-primary-200',
               'flex items-center justify-start gap-4 bg-transparent p-4'
             )}
           >

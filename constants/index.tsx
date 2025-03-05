@@ -6,17 +6,17 @@ export const sidebarLinks = [
   },
   {
     imgURL: '/icons/script-builder.svg',
-    route: '/scriptbuilder',
-    label: 'Script Builder'
+    route: '/node-editor',
+    label: 'Node Editor'
   },
   {
     imgURL: '/icons/pathfinder-white.svg',
-    route: '/pathfinder',
+    route: '#',
     label: 'Pathfinder'
   },
   {
     imgURL: '/icons/account-white.svg',
-    route: '#',
+    route: '#1',
     label: 'Account'
   }
 ];

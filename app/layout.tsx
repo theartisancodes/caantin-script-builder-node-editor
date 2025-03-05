@@ -1,13 +1,8 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import localFont from 'next/font/local';
 import ThemeProvider from '@/app/context/Theme';
-import Navbar from '@/components/navigation/navbar';
 import './globals.scss';
-
-export const metadata = {
-  title: 'Caantin',
-  description: 'A conversational pathway for Caantin AI call flow'
-};
+import { metadata } from '@/app/metadata';
 
 const inter = localFont({
   src: './fonts/InterVF.ttf',
@@ -23,7 +18,7 @@ const spaceGrotesk = localFont({
 export default function RootLayout({
   children
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>

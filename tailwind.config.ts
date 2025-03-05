@@ -12,6 +12,7 @@ const config: Config = {
       colors: {
         primary: {
           '100': '#8ecae6',
+          '200': '#5c677d',
           '300': '#0077b6',
           '500': '#003366',
           DEFAULT: 'hsl(var(--primary))',
@@ -25,6 +26,7 @@ const config: Config = {
           '500': '#101012'
         },
         light: {
+          '200': '#ced4da',
           '400': '#858EAD',
           '500': '#7B8EC8',
           '700': '#DCE3F1',

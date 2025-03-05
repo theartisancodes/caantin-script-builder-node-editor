@@ -38,6 +38,15 @@ export default [
       'prettier/prettier': 'error',
       '@typescript-eslint/no-unused-vars': ['error'],
       'no-console': 'off',
+      'no-unused-vars': [
+        'error',
+        {
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          ignoreRestSiblings: true
+        }
+      ],
       'react/display-name': 'off',
       'react/prop-types': 'off',
       'react-hooks/rules-of-hooks': 'error',

@@ -1,8 +1,8 @@
 import React from 'react';
-import Account from './account';
-import Logo from './logo';
-import Theme from './theme';
-import MobileNavigation from '@/components/navigation/navbar/mobile-navigation';
+import Account from './Account';
+import Logo from './Logo';
+import MobileNavigation from './MobileNavigation';
+import Theme from './Theme';
 
 const Navbar = () => {
   return (

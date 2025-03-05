@@ -24,7 +24,5 @@
     "^./styles",
     "^[./].*\\.scss$"
   ],
-  "importOrderParserPlugins": ["typescript", "jsx"],
-  "importOrderBuiltinModulesToTop": true,
-  "importOrderCaseInsensitive": true
+  "importOrderParserPlugins": ["typescript", "jsx"]
 }

@@ -1,15 +1,28 @@
 export type NodeType = 'greeting' | 'question' | 'information';
 
-export interface NodeData {
-  label: string;
-  message?: string;
-  question?: string;
-  options?: string[];
+export interface GreetingNode {
+  id: string;
+  type: 'greeting';
+  data: {
+    message: string;
+  };
 }
 
-export interface Node {
+export interface QuestionNode {
   id: string;
-  type: NodeType;
-  data: NodeData;
-  position: { x: number; y: number };
+  type: 'question';
+  data: {
+    question: string;
+    options: string[];
+  };
 }
+
+export interface InformationNode {
+  id: string;
+  type: 'information';
+  data: {
+    message: string;
+  };
+}
+
+export type Node = GreetingNode | QuestionNode | InformationNode;
