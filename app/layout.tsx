@@ -27,12 +27,12 @@ export default function RootLayout({
         <meta name="description" content={metadata.description} />
         <link
           rel="icon"
-          href="/images/favicon-white.ico"
+          href="/images/logo-white.svg"
           media="(prefers-color-scheme: dark)"
         />
         <link
           rel="icon"
-          href="/images/favicon-blue.ico"
+          href="/images/logo-blue.svg"
           media="(prefers-color-scheme: light)"
         />
       </head>
