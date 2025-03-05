@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Caantin AI Script Builder Node Editor
+
+A specialized component for Caantin AI's voice AI platform allowing non-technical users to create and edit voice conversation flows through an intuitive visual interface. This project focuses on the Node Properties Panel with a preview of how nodes appear visually.
+
+## Project Overview
+
+The Script Builder Node Editor enables Sales & Marketing Managers to create and edit voice conversation nodes without technical expertise. It provides a simple interface to customize node content and preview how it will appear in the conversation flow.
+
+### Key Features
+
+- Form-based editor for configuring node properties
+- Support for 3 node types: Greeting, Question, and Information
+- Type-specific form fields for each node type
+- Visual preview showing how nodes appear in the flow diagram
+- Simple save and edit functionality
+
+## Technology Stack
+
+- **Frontend**: React, Next.js
+- **Styling**: TailwindCSS with shadcn/ui components
+- **State Management**: React Context API
+- **Testing**: Jest and React Testing Library
 
 ## Getting Started
 
-First, run the development server:
+To run the development server:
 
 ```bash
-npm run dev
-# or
+# Install dependencies
+yarn install
+
+# Run development server
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Live Demo
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application is deployed on Vercel: [https://caantin-script-builder-node-editor.vercel.app/node-editor](https://caantin-script-builder-node-editor.vercel.app/node-editor)
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+- `/components/script-builder` - Core components for the node editor
+- `/components/ui` - Reusable UI components
+- `/types` - TypeScript type definitions
+- `/contexts` - React Context providers
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Node Types
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The application supports three node types:
 
-## Deploy on Vercel
+1. **Greeting** - For initial conversation messages
+2. **Question** - For collecting user input with multiple choice options
+3. **Information** - For providing information to users
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Development Approach
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project follows a component-based architecture with clear separation of concerns. The main components are:
+
+- `NodeProperties` - Form-based editor for node configuration
+- `NodePreview` - Visual representation of how nodes appear in the flow
+- `NodeTypeSelector` - Interface for switching between node types
+
+## Approach and Trade-offs
+
+### Design Philosophy
+
+I approached this technical challenge with a focus on creating an intuitive user experience for non-technical users while maintaining a clean, maintainable code architecture. The implementation prioritizes:
+
+- **User-centered design**: Clear visual differentiation between node types with consistent color coding and intuitive form layouts
+- **Component modularity**: Each component has a single responsibility, making the codebase easier to maintain and extend
+- **Type safety**: Comprehensive TypeScript definitions ensure robust data handling
+
+### Technical Decisions
+
+- **Local state management**: Used React's Context API instead of more complex state management solutions like Redux, as the scope of the application didn't warrant the additional complexity
+- **Shadcn/UI components**: Leveraged pre-built UI components to accelerate development while maintaining visual consistency
+- **Custom styling**: Extended TailwindCSS with custom utility classes for node-specific styling
+
+### Trade-offs Made
+
+1. **Simplicity vs. Completeness**: Focused on making the three node types work perfectly rather than implementing a broader range of features
+2. **Visual vs. Functional**: Prioritized a clean, responsive UI that works well on all devices over adding more advanced features
+3. **Testing approach**: Emphasized component unit tests over end-to-end testing to ensure core functionality works while keeping the development cycle fast
+4. **Form validation**: Implemented basic validation to ensure required fields are filled while leaving more sophisticated validation for future iterations
+
+## Testing
+
+Run tests with:
+
+```bash
+yarn test
+```
+
+## Future Enhancements
+
+- Advanced validation for required fields
+- More sophisticated node type visualization
+- Drag-and-drop node positioning
+- Connection management between nodes
+
+## About Caantin AI
+
+Caantin AI is building a voice AI platform for African enterprises that enables automated customer interactions at scale. Learn more at [caantin.ai](https://caantin.com).

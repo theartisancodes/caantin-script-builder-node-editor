@@ -1,6 +1,6 @@
 'use client';
 
-import NodePropertiesPanel from '../../../components/script-builder/NodeProperties';
+import NodePropertiesPanel from '@components/ScriptBuilder/NodeProperties';
 
 export default function NodeEditor() {
   return (
