@@ -35,6 +35,7 @@ describe('NodePreview', () => {
       data: {}
     };
 
+    // @ts-ignore
     render(<NodePreview node={node} />);
 
     expect(

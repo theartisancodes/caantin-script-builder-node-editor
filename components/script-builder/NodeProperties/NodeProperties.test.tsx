@@ -2,6 +2,24 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import NodeProperties from './index';
 
+interface NodeData {
+  message?: string;
+  question?: string;
+  options?: string[];
+}
+
+interface Node {
+  id: string;
+  type: string;
+  data: NodeData;
+}
+
+interface NodePropertiesProps {
+  selectedNode: Node | null;
+  onNodeChange: (_: Node) => void;
+}
+
+const TypedNodeProperties = NodeProperties as React.FC<NodePropertiesProps>;
 describe('NodeProperties', () => {
   it('renders with greeting node type', () => {
     const greetingNode = {
@@ -14,10 +32,12 @@ describe('NodeProperties', () => {
     };
 
     render(
-      <NodeProperties selectedNode={greetingNode} onNodeChange={() => {}} />
+      <TypedNodeProperties
+        selectedNode={greetingNode}
+        onNodeChange={() => {}}
+      />
     );
 
-    // Use more specific selectors to avoid ambiguity
     expect(screen.getByRole('button', { name: /^greeting$/i })).toHaveClass(
       'bg-primary'
     );
@@ -36,9 +56,10 @@ describe('NodeProperties', () => {
       }
     };
 
-    render(<NodeProperties selectedNode={infoNode} onNodeChange={() => {}} />);
+    render(
+      <TypedNodeProperties selectedNode={infoNode} onNodeChange={() => {}} />
+    );
 
-    // Click on the Information button to activate it
     fireEvent.click(screen.getByRole('button', { name: /^information$/i }));
 
     expect(screen.getByRole('button', { name: /^information$/i })).toHaveClass(
@@ -59,7 +80,10 @@ describe('NodeProperties', () => {
     };
 
     render(
-      <NodeProperties selectedNode={questionNode} onNodeChange={() => {}} />
+      <TypedNodeProperties
+        selectedNode={questionNode}
+        onNodeChange={() => {}}
+      />
     );
 
     const questionButton = screen.getByRole('button', { name: /^question$/i });
