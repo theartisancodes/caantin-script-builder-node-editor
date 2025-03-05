@@ -33,7 +33,7 @@ yarn install
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the application.
+Open [http://localhost:3000](http://localhost:3000) to view the application locally.
 
 ## Live Demo
 
@@ -41,7 +41,7 @@ The application is deployed on Vercel: [https://caantin-script-builder-node-edit
 
 ## Project Structure
 
-- `/components/script-builder` - Core components for the node editor
+- `/components/ScriptBuilder` - Core components for the node editor
 - `/components/ui` - Reusable UI components
 - `/types` - TypeScript type definitions
 - `/contexts` - React Context providers
@@ -102,4 +102,4 @@ yarn test
 
 ## About Caantin AI
 
-Caantin AI is building a voice AI platform for African enterprises that enables automated customer interactions at scale. Learn more at [caantin.ai](https://caantin.com).
+Caantin AI is building a voice AI platform for African enterprises that enables automated customer interactions at scale. Learn more at [caantin.com](https://caantin.com).
