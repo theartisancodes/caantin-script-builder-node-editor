@@ -5,7 +5,6 @@ import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
 import NavLinks from '../NavLinks';
-import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetClose,
