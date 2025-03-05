@@ -36,7 +36,7 @@ const MobileNavigation = () => {
           alt="menu"
           width={36}
           height={36}
-          className="invert-colors cursor-pointer sm:hidden"
+          className="cursor-pointer sm:hidden"
         />
       </SheetTrigger>
       <SheetContent
@@ -49,12 +49,12 @@ const MobileNavigation = () => {
             src={
               resolvedTheme === 'dark'
                 ? '/images/logo-white.svg'
-                : '/icons/logo-blue.svg'
+                : '/images/logo-blue.svg'
             }
             alt="menu"
             width={80}
             height={23}
-            className="invert-colors cursor-pointer sm:hidden"
+            className="cursor-pointer sm:hidden"
           />
         </Link>
 
@@ -64,24 +64,6 @@ const MobileNavigation = () => {
               <NavLinks isMobileNav />
             </section>
           </SheetClose>
-
-          <div className="flex flex-col gap-3">
-            <SheetClose asChild>
-              <Link href="#">
-                <Button className="small-medium btn-secondary min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
-                  <span className="primary-text-gradient">Log In</span>
-                </Button>
-              </Link>
-            </SheetClose>
-
-            <SheetClose asChild>
-              <Link href="#">
-                <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none">
-                  Sign Up
-                </Button>
-              </Link>
-            </SheetClose>
-          </div>
         </div>
       </SheetContent>
     </Sheet>
