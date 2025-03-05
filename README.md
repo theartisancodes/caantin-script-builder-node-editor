@@ -37,7 +37,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the application loca
 
 ## Live Demo
 
-The application is deployed on Vercel: [https://caantin-script-builder-node-editor.vercel.app/node-editor](https://caantin-script-builder-node-editor.vercel.app/node-editor)
+The application is deployed on Vercel: [https://joe-nzau.vercel.app/node-editor](https://joe-nzau.vercel.app/node-editor)
 
 ## Project Structure
 
