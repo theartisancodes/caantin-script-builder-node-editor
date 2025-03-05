@@ -6,13 +6,20 @@ A specialized component for Caantin AI's voice AI platform allowing non-technica
 
 The Script Builder Node Editor enables Sales & Marketing Managers to create and edit voice conversation nodes without technical expertise. It provides a simple interface to customize node content and preview how it will appear in the conversation flow.
 
-### Key Features
+### Implemented Features
 
-- Form-based editor for configuring node properties
-- Support for 3 node types: Greeting, Question, and Information
-- Type-specific form fields for each node type
-- Visual preview showing how nodes appear in the flow diagram
-- Simple save and edit functionality
+#### Must-Have (P0)
+- [x] A form-based editor for configuring node properties
+- [x] Support for 3 node types: Greeting, Question, and Information
+- [x] Type-specific form fields (e.g., message text for Greeting, question text and options for Question)
+- [x] Visual preview showing how the node will appear in the flow diagram
+- [x] Ability to save node configuration (local state is sufficient)
+
+#### Nice-to-Have (P1)
+- [x] Validation for required fields
+- [x] A toggle to switch between node types
+- [x] Visual styling that differentiates node types in the preview
+- [x] Responsive design that works on mobile and desktop
 
 ## Technology Stack
 
@@ -41,7 +48,7 @@ The application is deployed on Vercel: [https://joe-nzau.vercel.app/node-editor]
 
 ## Project Structure
 
-- `/components/ScriptBuilder` - Core components for the node editor
+- `/components/script-builder` - Core components for the node editor
 - `/components/ui` - Reusable UI components
 - `/types` - TypeScript type definitions
 - `/contexts` - React Context providers
@@ -53,6 +60,12 @@ The application supports three node types:
 1. **Greeting** - For initial conversation messages
 2. **Question** - For collecting user input with multiple choice options
 3. **Information** - For providing information to users
+
+## User Stories Implemented
+
+- [x] "As a Sales Manager, I want to edit the content of conversation nodes so I can customize my script messages."
+- [x] "As a Customer Service Lead, I want to configure question options so I can handle different customer responses."
+- [x] "As a Business Analyst, I want to preview how nodes will appear so I can ensure they're properly configured."
 
 ## Development Approach
 
@@ -92,6 +105,12 @@ Run tests with:
 ```bash
 yarn test
 ```
+
+## Deliverables Completed
+
+- [x] Source code repository (GitHub)
+- [x] Running prototype (deployed on Vercel)
+- [x] Brief explanation of approach and trade-offs (included in README)
 
 ## Future Enhancements
 
