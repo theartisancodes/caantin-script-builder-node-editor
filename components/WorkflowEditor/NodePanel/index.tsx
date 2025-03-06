@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-
 import { nodeConfig } from '@/constants';
 import { Button } from '@/components/ui/button';
 import { NodeType } from '@/types';

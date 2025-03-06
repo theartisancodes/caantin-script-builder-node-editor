@@ -142,14 +142,20 @@
   .base-medium {
     @apply text-[18px] font-medium leading-[25.2px];
   }
-
+  .base-small {
+    @apply text-[16px] font-medium leading-[23px];
+  }
   .base-semibold {
     @apply text-[18px] font-semibold leading-[25.2px];
   }
 
   .base-bold {
-    @apply text-[18px] font-bold leading-[140%];
+    @apply text-[1px] font-bold leading-[140%];
   }
+  .base-bold-small {
+    @apply text-[16px] font-bold leading-[100%];
+  }
+
 
   .paragraph-regular {
     @apply text-[16px] font-normal leading-[22.4px];
@@ -533,4 +539,3 @@ code {
     z-index: 5;
   }
 }
-

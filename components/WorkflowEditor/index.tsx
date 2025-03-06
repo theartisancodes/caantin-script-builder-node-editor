@@ -271,7 +271,10 @@ const WorkflowEditor = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setShowPropertiesPanel(false)}
+                onClick={() => {
+                  setShowPropertiesPanel(false);
+                  setSelectedNode(null);
+                }}
               >
                 <X size={18} />
               </Button>
