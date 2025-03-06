@@ -210,14 +210,13 @@ const WorkflowEditor = () => {
   };
   return (
     <div className="relative flex h-full w-full flex-col bg-background md:flex-row">
-      <div className="absolute right-6 top-6 z-10">
+      <div className="absolute bottom-4 right-4 z-10 md:bottom-auto md:right-8 md:top-8">
         <SaveWorkFlow
           nodes={nodes as ReactFlowNode[]}
           edges={edges}
           onSave={saveWorkflowAsTemplate}
         />
       </div>
-
       <div className="flex items-center justify-between border-b border-border p-2 md:hidden">
         <Button
           variant="outline"
@@ -251,7 +250,6 @@ const WorkflowEditor = () => {
           )}
         </div>
       </div>
-
       <div
         className={`${
           showSidebar
@@ -286,7 +284,6 @@ const WorkflowEditor = () => {
           </TabsContent>
         </Tabs>
       </div>
-
       <div className="flex flex-1 flex-col md:h-full md:flex-row">
         <div className="relative flex-1 overflow-hidden p-4">
           <ReactFlow
