@@ -216,7 +216,7 @@
   }
 
   .primary-gradient {
-    background: linear-gradient(to right, #1051B2FF, #1e88e5);
+    background: linear-gradient(to right, #1051b2ff, #1e88e5);
   }
 
   .dark-gradient {
@@ -464,7 +464,6 @@ code {
     @apply bg-background text-foreground;
   }
 }
-
 
 .react-flow-dark .react-flow__node {
   color: hsl(var(--foreground));

@@ -9,6 +9,7 @@ The Script Builder Node Editor enables Sales & Marketing Managers to create and 
 ### Implemented Features
 
 #### Must-Have (P0)
+
 - [x] A form-based editor for configuring node properties
 - [x] Support for 3 node types: Greeting, Question, and Information
 - [x] Type-specific form fields (e.g., message text for Greeting, question text and options for Question)
@@ -16,6 +17,7 @@ The Script Builder Node Editor enables Sales & Marketing Managers to create and 
 - [x] Ability to save node configuration (local state is sufficient)
 
 #### Nice-to-Have (P1)
+
 - [x] Validation for required fields
 - [x] A toggle to switch between node types
 - [x] Visual styling that differentiates node types in the preview
