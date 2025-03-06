@@ -1,4 +1,4 @@
-```markdown
+````markdown
 # Caantin AI Script Builder Node Editor
 
 A specialized component for Caantin AI's voice AI platform allowing non-technical users to create and edit voice conversation flows through an intuitive visual interface. This project implements a full-featured Script Builder with node editing capabilities and visual workflow representation.
@@ -53,6 +53,7 @@ yarn install
 # Run development server
 yarn dev
 ```
+````
 
 Open [http://localhost:3000](http://localhost:3000) to view the application locally.
 
@@ -182,6 +183,7 @@ yarn test
 ## About Caantin AI
 
 Caantin AI is building a voice AI platform for African enterprises that enables automated customer interactions at scale. Learn more at [caantin.com](https://caantin.com).
+
 ```
 
 This updated README now includes:
@@ -195,3 +197,4 @@ This updated README now includes:
 7. A clear organization of the technical approach and design decisions
 
 The README maintains a professional tone while highlighting all the completed work based on both the PRD and feedback.
+```

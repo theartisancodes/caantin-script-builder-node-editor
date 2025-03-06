@@ -1,25 +1,16 @@
-// TemplatesPanel/index.tsx
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { templatesList } from '@/constants';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-
-interface Template {
-  id: string;
-  name: string;
-  description?: string;
-  createdAt: string;
-  nodes?: any[];
-  edges?: any[];
-}
+import { WorkflowTemplate } from '@/types';
 
 interface TemplatesPanelProps {
-  onSelectTemplate: (_: Template) => void;
+  onSelectTemplate: (_: WorkflowTemplate) => void;
 }
 
 const TemplatesPanel = ({ onSelectTemplate }: TemplatesPanelProps) => {
-  const [templates, setTemplates] = useState<Template[]>([]);
+  const [templates, setTemplates] = useState<WorkflowTemplate[]>([]);
   const [loading, setLoading] = useState(true);
   const { resolvedTheme } = useTheme();
 

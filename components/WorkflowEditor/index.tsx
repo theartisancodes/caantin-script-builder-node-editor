@@ -6,7 +6,6 @@ import ReactFlow, {
   Background,
   Connection,
   Controls,
-  Edge,
   MarkerType,
   NodeMouseHandler,
   NodeTypes,
@@ -26,17 +25,7 @@ import Nodes from './Nodes';
 import TemplatesPanel from './TemplatesPanel';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { NodeData, NodeType } from '@/types';
-
-type WorkflowTemplate = {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  nodes: ReactFlowNode[];
-  edges: Edge[];
-  connections?: { sourceNodeId: string; targetNodeId: string }[];
-};
+import { NodeData, NodeType, WorkflowTemplate } from '@/types';
 
 const nodeTypesMap: NodeTypes = {
   greeting: (props) => <Nodes {...props} type="greeting" />,
@@ -208,6 +197,7 @@ const WorkflowEditor = () => {
       const { nodes, edges } = templateNodeData(isDark);
       const fullTemplateData = {
         ...template,
+        description: template.description || '',
         nodes,
         edges
       };

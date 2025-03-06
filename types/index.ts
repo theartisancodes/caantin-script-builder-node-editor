@@ -1,4 +1,4 @@
-import {Edge} from "reactflow";
+import { Edge, Node as ReactFlowNode } from 'reactflow';
 
 export type NodeType =
   | 'greeting'
@@ -92,3 +92,12 @@ export interface NodeData {
   destination?: string;
 }
 
+export interface WorkflowTemplate {
+  id: string;
+  name?: string;
+  description?: string;
+  createdAt?: string;
+  nodes?: ReactFlowNode[];
+  edges?: Edge[];
+  connections?: { sourceNodeId: string; targetNodeId: string }[];
+}
