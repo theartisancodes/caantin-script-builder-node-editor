@@ -26,12 +26,6 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
     setHasChanges(false);
   }, [node.data]);
 
-  const handleCancel = () => {
-    setNodeData(originalData);
-    setHasChanges(false);
-    if (onClose) onClose();
-  };
-
   const handleSave = () => {
     onUpdate(nodeData);
     setOriginalData(nodeData);
@@ -314,14 +308,11 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 border-t border-border bg-background p-4">
+      <div className="l absolute bottom-0 left-0 right-0 border-t border-border bg-background p-4">
         {hasChanges && (
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button onClick={handleSave}>Apply Changes</Button>
-          </div>
+          <Button className="w-full" onClick={handleSave}>
+            Apply Changes
+          </Button>
         )}
       </div>
     </div>
