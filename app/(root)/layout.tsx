@@ -17,7 +17,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         <section
           className={`flex min-h-screen flex-1 flex-col ${
             isWorkflowPage
-              ? 'h-[calc(100vh-64px)]' // Adjust this value based on your navbar height
+              ? 'h-[calc(100vh-64px)]'
               : 'px-6 pb-6 pt-3 max-md:pb-14 sm:px-14'
           }`}
         >

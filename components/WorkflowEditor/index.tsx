@@ -24,7 +24,6 @@ import Nodes from './Nodes';
 import { Button } from '@/components/ui/button';
 import { NodeData, NodeType } from '@/types';
 
-// Fix nodeTypes to match ReactFlow's expected component structure
 const nodeTypesMap: NodeTypes = {
   greeting: (props) => <Nodes {...props} type="greeting" />,
   question: (props) => <Nodes {...props} type="question" />,

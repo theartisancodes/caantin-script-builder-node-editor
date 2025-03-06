@@ -77,8 +77,6 @@ const Node = ({ data, type }: DynamicNodeProps) => {
               {data.question}
             </div>
             <div className="space-y-0.5">
-              {' '}
-              {/* Reduced spacing */}
               {data.options?.map((option, index) => (
                 <div
                   key={index}
