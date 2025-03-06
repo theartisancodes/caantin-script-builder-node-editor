@@ -36,9 +36,9 @@ const Node = ({ data, type }: DynamicNodeProps) => {
     : `${config.color.light.border} ${config.color.light.bg}`;
 
   const optionColorClasses = isDark
-    ? `${hasOptionalColors(config.color.dark) ? config.color.dark.optionBorder : ''} 
+    ? `${hasOptionalColors(config.color.dark) ? config.color.dark.optionBorder : ''}
        ${hasOptionalColors(config.color.dark) ? config.color.dark.optionBg : ''}`
-    : `${hasOptionalColors(config.color.light) ? config.color.light.optionBorder : ''} 
+    : `${hasOptionalColors(config.color.light) ? config.color.light.optionBorder : ''}
        ${hasOptionalColors(config.color.light) ? config.color.light.optionBg : ''}`;
 
   const codeColorClass = isDark
@@ -51,35 +51,38 @@ const Node = ({ data, type }: DynamicNodeProps) => {
 
   const getHandleStyle = () => ({
     background: isDark ? colors.dark.handle : colors.light.handle,
-    width: 8,
-    height: 8,
-    border: `2px solid ${isDark ? colors.dark.border : colors.light.border}`
+    width: 6,
+    height: 6,
+    border: `1px solid ${isDark ? colors.dark.border : colors.light.border}`
   });
 
   return (
     <div
-      className={`w-64 rounded-md border-2 px-4 py-2 shadow-sm ${colorClasses}`}
+      className={`w-48 max-w-full rounded-md border-[1.5px] px-3 py-2 text-sm shadow-sm sm:w-52 md:w-56 lg:w-60 ${colorClasses}`}
     >
       <Handle type="target" position={Position.Top} style={getHandleStyle()} />
 
-      <div className="flex items-center gap-2">
-        <IconComponent size={18} />
-        <div className="font-medium">{config.label}</div>
+      <div className="flex items-center gap-1">
+        <IconComponent size={14} />
+        <div className="text-xs font-medium sm:text-sm">{config.label}</div>
       </div>
 
-      <div className="mt-2 text-sm">
+      <div className="mt-1 text-xs sm:text-sm">
         {(type === 'greeting' || type === 'information') && (
-          <div className="text-foreground">{data.message}</div>
+          <div className="line-clamp-3 text-foreground">{data.message}</div>
         )}
-
         {type === 'question' && (
           <>
-            <div className="mb-1 text-foreground">{data.question}</div>
-            <div className="space-y-1">
+            <div className="mb-1 line-clamp-2 text-foreground">
+              {data.question}
+            </div>
+            <div className="space-y-0.5">
+              {' '}
+              {/* Reduced spacing */}
               {data.options?.map((option, index) => (
                 <div
                   key={index}
-                  className={`rounded border px-2 py-1 text-foreground ${optionColorClasses}`}
+                  className={`rounded border px-1.5 py-0.5 text-xs text-foreground ${optionColorClasses}`}
                 >
                   {option}
                   <Handle
@@ -88,7 +91,7 @@ const Node = ({ data, type }: DynamicNodeProps) => {
                     id={`option-${index}`}
                     style={{
                       ...getHandleStyle(),
-                      top: `${50 + index * 20}%`
+                      top: `${50 + index * 18}%`
                     }}
                   />
                 </div>
@@ -96,15 +99,16 @@ const Node = ({ data, type }: DynamicNodeProps) => {
             </div>
           </>
         )}
-
         {type === 'decision' && (
           <>
-            <div className="mb-1 text-foreground">{data.condition}</div>
-            <div className="space-y-1">
+            <div className="mb-1 line-clamp-2 text-foreground">
+              {data.condition}
+            </div>
+            <div className="space-y-0.5">
               {data.options?.map((option, index) => (
                 <div
                   key={index}
-                  className={`rounded border px-2 py-1 text-foreground ${optionColorClasses}`}
+                  className={`rounded border px-1.5 py-0.5 text-xs text-foreground ${optionColorClasses}`}
                 >
                   {option}
                   <Handle
@@ -113,7 +117,7 @@ const Node = ({ data, type }: DynamicNodeProps) => {
                     id={`option-${index}`}
                     style={{
                       ...getHandleStyle(),
-                      top: `${50 + index * 20}%`
+                      top: `${50 + index * 18}%`
                     }}
                   />
                 </div>
@@ -121,33 +125,32 @@ const Node = ({ data, type }: DynamicNodeProps) => {
             </div>
           </>
         )}
-
         {type === 'knowledge' && (
           <>
-            <div className="mb-1 font-medium text-foreground">{data.title}</div>
-            <div className="text-foreground">{data.content}</div>
+            <div className="mb-0.5 line-clamp-1 font-medium text-foreground">
+              {data.title}
+            </div>
+            <div className="line-clamp-3 text-foreground">{data.content}</div>
           </>
         )}
-
         {type === 'database' && (
           <>
-            <div className="mb-1 font-medium text-foreground">
+            <div className="mb-0.5 line-clamp-1 font-medium text-foreground">
               {data.operation}: {data.entity}
             </div>
             <div
-              className={`rounded p-1 font-mono text-xs text-foreground ${codeColorClass}`}
+              className={`line-clamp-2 rounded p-1 font-mono text-[10px] text-foreground ${codeColorClass}`}
             >
               {data.details}
             </div>
           </>
         )}
-
         {type === 'transfer' && (
           <>
-            <div className="mb-1 font-medium text-foreground">
+            <div className="mb-0.5 line-clamp-1 font-medium text-foreground">
               To: {data.destination}
             </div>
-            <div className="text-foreground">{data.message}</div>
+            <div className="line-clamp-2 text-foreground">{data.message}</div>
           </>
         )}
       </div>

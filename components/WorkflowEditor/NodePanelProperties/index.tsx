@@ -17,29 +17,51 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
 }) => {
   const [originalData, setOriginalData] = useState<NodeData>(node.data);
   const [nodeData, setNodeData] = useState<NodeData>(node.data);
+  const [hasChanges, setHasChanges] = useState<boolean>(false);
   const { resolvedTheme } = useTheme();
+
   useEffect(() => {
     setNodeData(node.data);
     setOriginalData(node.data);
+    setHasChanges(false);
   }, [node.data]);
 
   const handleCancel = () => {
     setNodeData(originalData);
+    setHasChanges(false);
     if (onClose) onClose();
   };
 
   const handleSave = () => {
     onUpdate(nodeData);
-
     setOriginalData(nodeData);
+    setHasChanges(false);
+    onClose?.();
   };
 
+  const updateOption = (index: number, value: string) => {
+    if (
+      (node.type === 'question' || node.type === 'decision') &&
+      nodeData.options
+    ) {
+      const newOptions = [...nodeData.options];
+      newOptions[index] = value;
+      updateNodeData({
+        ...nodeData,
+        options: newOptions
+      });
+    }
+  };
+  const updateNodeData = (newData: NodeData) => {
+    setNodeData(newData);
+    setHasChanges(JSON.stringify(newData) !== JSON.stringify(originalData));
+  };
   const addOption = () => {
     if (
       (node.type === 'question' || node.type === 'decision') &&
       nodeData.options
     ) {
-      setNodeData({
+      updateNodeData({
         ...nodeData,
         options: [...nodeData.options, '']
       });
@@ -53,21 +75,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
     ) {
       const newOptions = [...nodeData.options];
       newOptions.splice(index, 1);
-      setNodeData({
-        ...nodeData,
-        options: newOptions
-      });
-    }
-  };
-
-  const updateOption = (index: number, value: string) => {
-    if (
-      (node.type === 'question' || node.type === 'decision') &&
-      nodeData.options
-    ) {
-      const newOptions = [...nodeData.options];
-      newOptions[index] = value;
-      setNodeData({
+      updateNodeData({
         ...nodeData,
         options: newOptions
       });
@@ -76,8 +84,8 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex-1 overflow-y-auto pr-1">
-        <div className="space-y-4">
+      <div className="flex-1 overflow-y-auto pb-20 pr-1 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border hover:scrollbar-thumb-muted-foreground">
+        <div className="space-y-4 pb-24">
           <h2 className="text-lg font-bold capitalize">
             {node.type} Node Properties
           </h2>
@@ -104,7 +112,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                 id="message"
                 value={nodeData.message || ''}
                 onChange={(e) =>
-                  setNodeData({ ...nodeData, message: e.target.value })
+                  updateNodeData({ ...nodeData, message: e.target.value })
                 }
                 className="min-h-24"
               />
@@ -119,7 +127,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   id="question"
                   value={nodeData.question || ''}
                   onChange={(e) =>
-                    setNodeData({ ...nodeData, question: e.target.value })
+                    updateNodeData({ ...nodeData, question: e.target.value })
                   }
                   className="min-h-24"
                 />
@@ -168,7 +176,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   id="condition"
                   value={nodeData.condition || ''}
                   onChange={(e) =>
-                    setNodeData({ ...nodeData, condition: e.target.value })
+                    updateNodeData({ ...nodeData, condition: e.target.value })
                   }
                   className="min-h-24"
                 />
@@ -217,7 +225,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   id="title"
                   value={nodeData.title || ''}
                   onChange={(e) =>
-                    setNodeData({ ...nodeData, title: e.target.value })
+                    updateNodeData({ ...nodeData, title: e.target.value })
                   }
                   placeholder="Knowledge Title"
                 />
@@ -228,7 +236,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   id="content"
                   value={nodeData.content || ''}
                   onChange={(e) =>
-                    setNodeData({ ...nodeData, content: e.target.value })
+                    updateNodeData({ ...nodeData, content: e.target.value })
                   }
                   className="min-h-24"
                   placeholder="Knowledge content..."
@@ -245,7 +253,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   id="operation"
                   value={nodeData.operation || ''}
                   onChange={(e) =>
-                    setNodeData({ ...nodeData, operation: e.target.value })
+                    updateNodeData({ ...nodeData, operation: e.target.value })
                   }
                   placeholder="Query, Insert, Update, etc."
                 />
@@ -256,7 +264,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   id="entity"
                   value={nodeData.entity || ''}
                   onChange={(e) =>
-                    setNodeData({ ...nodeData, entity: e.target.value })
+                    updateNodeData({ ...nodeData, entity: e.target.value })
                   }
                   placeholder="Table or collection name"
                 />
@@ -267,7 +275,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   id="details"
                   value={nodeData.details || ''}
                   onChange={(e) =>
-                    setNodeData({ ...nodeData, details: e.target.value })
+                    updateNodeData({ ...nodeData, details: e.target.value })
                   }
                   className="min-h-24 font-mono text-sm"
                   placeholder="SELECT * FROM users WHERE..."
@@ -284,7 +292,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   id="destination"
                   value={nodeData.destination || ''}
                   onChange={(e) =>
-                    setNodeData({ ...nodeData, destination: e.target.value })
+                    updateNodeData({ ...nodeData, destination: e.target.value })
                   }
                   placeholder="Department or team name"
                 />
@@ -295,7 +303,7 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   id="transferMessage"
                   value={nodeData.message || ''}
                   onChange={(e) =>
-                    setNodeData({ ...nodeData, message: e.target.value })
+                    updateNodeData({ ...nodeData, message: e.target.value })
                   }
                   className="min-h-24"
                   placeholder="Transfer message..."
@@ -306,12 +314,16 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
         </div>
       </div>
 
-      <footer className="flex-between sticky bottom-0 mr-4 mt-4 flex justify-end gap-2 border-t border-border pt-4">
-        <Button variant="outline" onClick={handleCancel}>
-          Cancel
-        </Button>
-        <Button onClick={handleSave}>Apply Changes</Button>
-      </footer>
+      <div className="absolute bottom-0 left-0 right-0 border-t border-border bg-background p-4">
+        {hasChanges && (
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave}>Apply Changes</Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

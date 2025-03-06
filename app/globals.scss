@@ -505,3 +505,32 @@ code {
 .react-flow-light .react-flow__edge-path {
   stroke: #64748b;
 }
+
+/* ReactFlow-specific styles that can't be handled by Tailwind */
+.react-flow-dark {
+  @apply bg-gray-900 text-white;
+}
+
+.react-flow-light {
+  @apply bg-slate-50 text-black;
+}
+
+/* Mobile-optimized styles */
+@media (max-width: 768px) {
+  .react-flow__controls {
+    bottom: 10px;
+    right: 10px;
+    top: auto;
+    transform: scale(0.9);
+  }
+
+  .react-flow__node {
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
+
+  .react-flow__panel {
+    z-index: 5;
+  }
+}
+

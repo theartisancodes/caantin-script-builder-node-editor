@@ -1,18 +1,20 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactFlow, {
   addEdge,
   Background,
   Connection,
   Controls,
   MarkerType,
+  NodeMouseHandler,
+  NodeTypes,
   Node as ReactFlowNode,
   useEdgesState,
   useNodesState
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { X } from 'lucide-react';
+import { Menu, X, ZoomIn } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useTheme } from 'next-themes';
 import NodePropertiesPanel from '@components/WorkflowEditor/NodePanelProperties';
@@ -20,72 +22,17 @@ import { defaultNodeData, flowColors } from '@/constants';
 import NodePanel from './NodePanel';
 import Nodes from './Nodes';
 import { Button } from '@/components/ui/button';
-import { Node, NodeData, NodeType } from '@/types';
+import { NodeData, NodeType } from '@/types';
 
-interface NodeProps {
-  id: string;
-  data: any;
-  selected: boolean;
-  [key: string]: any;
-}
-
-const GreetingNodeComponent = (props: NodeProps) => (
-  <Nodes {...props} type="greeting" />
-);
-const QuestionNodeComponent = (props: NodeProps) => (
-  <Nodes {...props} type="question" />
-);
-const InformationNodeComponent = (props: NodeProps) => (
-  <Nodes {...props} type="information" />
-);
-const DecisionNodeComponent = (props: NodeProps) => (
-  <Nodes {...props} type="decision" />
-);
-const KnowledgeNodeComponent = (props: NodeProps) => (
-  <Nodes {...props} type="knowledge" />
-);
-const DatabaseNodeComponent = (props: NodeProps) => (
-  <Nodes {...props} type="database" />
-);
-const TransferNodeComponent = (props: NodeProps) => (
-  <Nodes {...props} type="transfer" />
-);
-
-const nodeTypes = {
-  greeting: GreetingNodeComponent,
-  question: QuestionNodeComponent,
-  information: InformationNodeComponent,
-  decision: DecisionNodeComponent,
-  knowledge: KnowledgeNodeComponent,
-  database: DatabaseNodeComponent,
-  transfer: TransferNodeComponent
-};
-
-const getEdgeStyle = (sourceNode: any, targetNode: any, isDark: boolean) => {
-  if (!sourceNode) return { stroke: '#64748b', strokeWidth: 2 };
-
-  const nodeType = sourceNode.type as NodeType;
-  const validType = Object.keys(flowColors).includes(nodeType)
-    ? nodeType
-    : 'greeting';
-  const colors = flowColors[validType];
-
-  return {
-    stroke: isDark ? colors.dark.edge : colors.light.edge,
-    strokeWidth: 2
-  };
-};
-
-const getNodeColors = (nodeType: NodeType, isDark: boolean) => {
-  const validType = Object.keys(flowColors).includes(nodeType)
-    ? nodeType
-    : 'greeting';
-  const colors = flowColors[validType];
-
-  return {
-    background: isDark ? colors.dark.background : colors.light.background,
-    border: isDark ? colors.dark.border : colors.light.border
-  };
+// Fix nodeTypes to match ReactFlow's expected component structure
+const nodeTypesMap: NodeTypes = {
+  greeting: (props) => <Nodes {...props} type="greeting" />,
+  question: (props) => <Nodes {...props} type="question" />,
+  information: (props) => <Nodes {...props} type="information" />,
+  decision: (props) => <Nodes {...props} type="decision" />,
+  knowledge: (props) => <Nodes {...props} type="knowledge" />,
+  database: (props) => <Nodes {...props} type="database" />,
+  transfer: (props) => <Nodes {...props} type="transfer" />
 };
 
 const WorkflowEditor = () => {
@@ -94,127 +41,42 @@ const WorkflowEditor = () => {
 
   const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+  const [selectedNode, setSelectedNode] = useState<ReactFlowNode | null>(null);
   const [showNodePanel, setShowNodePanel] = useState(true);
   const [showPropertiesPanel, setShowPropertiesPanel] = useState(false);
-  const [showPreviewPanel, setShowPreviewPanel] = useState(true);
+  const [showMobileControls, setShowMobileControls] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1);
+
+  const getNodeColors = (type: NodeType, isDark: boolean) => {
+    const colors = flowColors[type] || flowColors.greeting;
+    return {
+      background: isDark ? colors.dark.background : colors.light.background,
+      border: isDark ? colors.dark.border : colors.light.border
+    };
+  };
 
   const onConnect = useCallback(
-    (params: Connection) => {
-      const sourceNode = nodes.find((node) => node.id === params.source);
-      const targetNode = nodes.find((node) => node.id === params.target);
-
-      const edgeStyle = getEdgeStyle(sourceNode, targetNode, isDark);
-
+    (connection: Connection) => {
       setEdges((eds) =>
         addEdge(
           {
-            ...params,
-            type: 'smoothstep',
+            ...connection,
+            animated: true,
+            style: {
+              stroke: isDark ? '#4b5563' : '#94a3b8',
+              strokeWidth: 1.5
+            },
             markerEnd: {
               type: MarkerType.ArrowClosed,
-              color: edgeStyle.stroke
-            },
-            style: edgeStyle
+              color: isDark ? '#4b5563' : '#94a3b8'
+            }
           },
           eds
         )
       );
     },
-    [setEdges, isDark, nodes]
+    [setEdges, isDark]
   );
-
-  const addNodeToFlow = (nodeType: NodeType) => {
-    const position = { x: 100, y: 100 + nodes.length * 100 };
-    const nodeData = defaultNodeData[nodeType];
-
-    if (!nodeData) return;
-
-    const colors = getNodeColors(nodeType, isDark);
-
-    const newNode = {
-      id: nanoid(),
-      type: nodeType,
-      position,
-      data: {
-        ...nodeData,
-        isDark,
-        nodeType
-      },
-      style: {
-        background: colors.background,
-        borderColor: colors.border,
-        borderWidth: 1,
-        borderStyle: 'solid',
-        backgroundColor: colors.background,
-        opacity: 0.8
-      }
-    };
-
-    setNodes((nds) => [...nds, newNode]);
-
-    if (window.innerWidth < 768) {
-      setShowNodePanel(false);
-    }
-  };
-
-  useEffect(() => {
-    setNodes((nds) =>
-      nds.map((node) => {
-        const nodeType = node.type as NodeType;
-        const colors = getNodeColors(nodeType, isDark);
-
-        return {
-          ...node,
-          data: {
-            ...node.data
-          },
-          style: {
-            ...node.style,
-            background: colors.background,
-            backgroundColor: colors.background,
-            borderColor: colors.border,
-            opacity: 0.8
-          }
-        };
-      })
-    );
-  }, [isDark, setNodes]);
-
-  const nodeMap = useMemo(() => {
-    return nodes.reduce(
-      (map, node) => {
-        map[node.id] = node;
-        return map;
-      },
-      {} as Record<string, any>
-    );
-  }, [nodes]);
-
-  useEffect(() => {
-    setEdges((eds) =>
-      eds.map((edge) => {
-        const sourceNode = nodeMap[edge.source];
-        const targetNode = nodeMap[edge.target];
-
-        const edgeStyle = getEdgeStyle(sourceNode, targetNode, isDark);
-
-        return {
-          ...edge,
-          markerEnd: {
-            type: MarkerType.ArrowClosed,
-            color: edgeStyle.stroke
-          },
-          style: edgeStyle
-        };
-      })
-    );
-  }, [isDark, nodeMap, setEdges]);
-
-  const onNodeClick = (_: React.MouseEvent, node: ReactFlowNode) => {
-    setSelectedNode(node as Node);
-    setShowPropertiesPanel(true);
-  };
 
   const handleNodeUpdate = useCallback(
     (data: NodeData) => {
@@ -247,55 +109,164 @@ const WorkflowEditor = () => {
     [selectedNode, setNodes, isDark]
   );
 
+  const onNodeClick: NodeMouseHandler = useCallback((event, node) => {
+    setSelectedNode(node);
+    setShowPropertiesPanel(true);
+  }, []);
+
+  const addNodeToFlow = (nodeType: NodeType) => {
+    const position = { x: 100, y: 100 + nodes.length * 80 };
+    const nodeData = defaultNodeData[nodeType];
+
+    if (!nodeData) return;
+
+    const colors = getNodeColors(nodeType, isDark);
+
+    const newNode = {
+      id: nanoid(),
+      type: nodeType,
+      position,
+      data: {
+        ...nodeData,
+        nodeType
+      },
+      style: {
+        background: colors.background,
+        borderColor: colors.border,
+        borderWidth: 1.5,
+        borderStyle: 'solid',
+        backgroundColor: colors.background,
+        opacity: 0.8
+      }
+    };
+
+    setNodes((nds) => [...nds, newNode]);
+
+    if (window.innerWidth < 768) {
+      setShowNodePanel(false);
+    }
+  };
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        const nodeType = node.type as NodeType;
+        const colors = getNodeColors(nodeType, isDark);
+
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            isDark
+          },
+          style: {
+            ...node.style,
+            background: colors.background,
+            backgroundColor: colors.background,
+            borderColor: colors.border,
+            opacity: 0.8
+          }
+        };
+      })
+    );
+  }, [isDark, setNodes]);
+
+  const handleZoomChange = (zoom: number) => {
+    setZoomLevel(zoom);
+  };
+
   return (
-    <div className="relative flex h-full w-full bg-background">
-      <div className="fixed left-2 top-16 z-10 flex gap-2 md:hidden">
+    <div className="relative flex h-full w-full flex-col bg-background md:flex-row">
+      <div className="flex items-center justify-between border-b border-border p-2 md:hidden">
         <Button
           variant="outline"
           size="sm"
-          className="bg-background"
           onClick={() => setShowNodePanel(!showNodePanel)}
+          className="flex items-center gap-2"
         >
-          {showNodePanel ? 'Hide Nodes' : 'Show Nodes'}
+          <Menu size={16} />
+          {showNodePanel ? 'Hide' : 'Show'} Nodes
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="bg-background"
-          onClick={() => setShowPreviewPanel(!showPreviewPanel)}
-        >
-          {showPreviewPanel ? 'Hide Preview' : 'Show Preview'}
-        </Button>
-      </div>
-      <div
-        className={`${
-          showNodePanel ? 'flex' : 'hidden'
-        } absolute z-20 h-full w-64 border-r border-border bg-muted/40 shadow-lg md:relative md:flex md:shadow-none`}
-      >
-        <div className="w-full p-4">
-          <div className="mb-2 flex items-center justify-between md:hidden">
-            <h3 className="font-semibold">Nodes</h3>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowMobileControls(!showMobileControls)}
+            className="flex items-center gap-1"
+          >
+            <ZoomIn size={16} />
+            {(zoomLevel * 100).toFixed(0)}%
+          </Button>
+
+          {selectedNode && (
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
-              onClick={() => setShowNodePanel(false)}
+              onClick={() => setShowPropertiesPanel(!showPropertiesPanel)}
             >
-              <X size={18} />
+              {showPropertiesPanel ? 'Hide' : 'Edit'} Properties
             </Button>
-          </div>
-          <NodePanel onAddNode={addNodeToFlow} />
+          )}
         </div>
       </div>
-      <div className="flex h-full flex-1">
+
+      <div
+        className={`${
+          showNodePanel
+            ? 'max-h-64 overflow-y-auto md:max-h-full md:w-72'
+            : 'max-h-0 overflow-hidden md:max-h-full md:w-0'
+        } shrink-0 border-b border-border transition-all duration-300 md:border-b-0 md:border-r`}
+      >
+        <div className="flex items-center justify-between border-b border-border p-4">
+          <h3 className="font-semibold">Nodes</h3>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowNodePanel(false)}
+            className="md:hidden"
+          >
+            <X size={18} />
+          </Button>
+        </div>
+        <NodePanel onAddNode={addNodeToFlow} />
+      </div>
+
+      <div className="flex flex-1 flex-col md:h-full md:flex-row">
+        <div className="relative flex-1 overflow-hidden">
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onNodeClick={onNodeClick}
+            nodeTypes={nodeTypesMap}
+            fitView
+            proOptions={{ hideAttribution: true }}
+            className={`h-full w-full transition-colors ${isDark ? 'react-flow-dark' : 'react-flow-light'}`}
+            onPaneClick={() => {
+              setSelectedNode(null);
+              setShowPropertiesPanel(false);
+            }}
+            onMove={(_e, viewport) => handleZoomChange(viewport.zoom)}
+          >
+            <Background color={isDark ? '#374151' : '#e2e8f0'} size={1.5} />
+            <Controls
+              className="rounded-md border border-border bg-background"
+              showInteractive={false}
+            />
+          </ReactFlow>
+        </div>
         {selectedNode && (
           <div
             className={`${
               showPropertiesPanel
-                ? 'translate-y-0'
-                : 'translate-y-full md:translate-y-0'
-            } fixed bottom-0 left-0 right-0 z-20 h-3/4 border-t border-border bg-muted/40 p-4 shadow-lg transition-transform duration-300 md:static md:h-full md:w-72 md:border-r md:border-t-0 md:shadow-none`}
+                ? 'translate-y-0 opacity-100'
+                : 'translate-y-full opacity-0 md:pointer-events-none md:translate-y-0 md:opacity-0'
+            } fixed bottom-0 left-0 right-0 z-20 h-[70vh] border-t border-border bg-background p-4 shadow-lg transition-all duration-300 md:relative md:h-auto md:w-72 md:shrink-0 md:border-l md:border-t-0 md:shadow-none`}
           >
-            <div className="mb-4 flex items-center justify-between md:hidden">
+            <div className="mb-4 flex items-center justify-between">
               <h3 className="font-semibold">Properties</h3>
               <Button
                 variant="ghost"
@@ -305,42 +276,20 @@ const WorkflowEditor = () => {
                 <X size={18} />
               </Button>
             </div>
-            {showPropertiesPanel && selectedNode && (
-              <div className="h-full w-72 border-l border-border p-4">
-                <NodePropertiesPanel
-                  node={selectedNode}
-                  onUpdate={handleNodeUpdate}
-                  onClose={() => {
-                    setShowPropertiesPanel(false);
-                    setSelectedNode(null);
-                  }}
-                />
-              </div>
-            )}
+            <NodePropertiesPanel
+              node={selectedNode as any}
+              onUpdate={(data) => {
+                handleNodeUpdate(data);
+                setShowPropertiesPanel(false);
+                setSelectedNode(null);
+              }}
+              onClose={() => {
+                setShowPropertiesPanel(false);
+                setSelectedNode(null);
+              }}
+            />
           </div>
         )}
-
-        <div className="relative flex-1">
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onNodeClick={onNodeClick}
-            nodeTypes={nodeTypes}
-            fitView
-            proOptions={{ hideAttribution: true }}
-            className={isDark ? 'react-flow-dark' : 'react-flow-light'}
-            onPaneClick={() => {
-              setSelectedNode(null);
-              setShowPropertiesPanel(false);
-            }}
-          >
-            <Background color={isDark ? '#374151' : '#e2e8f0'} />
-            <Controls className="rounded-md border border-border bg-background" />
-          </ReactFlow>
-        </div>
       </div>
     </div>
   );
