@@ -1,4 +1,4 @@
-// in components/WorkflowEditor/NodePanelProperties/index.tsx
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '@ui/button';
@@ -10,23 +10,61 @@ import { useTheme } from 'next-themes';
 import NodePreview from '@components/WorkflowEditor/NodePreview';
 import { NodeData, NodePropertiesPanelProps } from '@/types';
 
-const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
+const NodePropertiesPanel = ({
   node,
   onUpdate,
   onClose
-}) => {
+}: NodePropertiesPanelProps) => {
   const [originalData, setOriginalData] = useState<NodeData>(node.data);
   const [nodeData, setNodeData] = useState<NodeData>(node.data);
   const [hasChanges, setHasChanges] = useState<boolean>(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     setNodeData(node.data);
     setOriginalData(node.data);
     setHasChanges(false);
-  }, [node.data]);
+    setErrors({});
+  }, [node]);
+
+  const validate = (newData: NodeData) => {
+    const newErrors: Record<string, string> = {};
+
+    if (
+      (node.type === 'greeting' || node.type === 'information') &&
+      !newData.message?.trim()
+    ) {
+      newErrors.message = 'Message is required.';
+    }
+    if (node.type === 'question' && !newData.question?.trim()) {
+      newErrors.question = 'Question is required.';
+    }
+
+    if (node.type === 'question' || node.type === 'decision') {
+      if (!newData.options?.length) {
+        newErrors.options = 'At least one option is required.';
+      } else if (newData.options.some((opt) => !opt.trim())) {
+        newErrors.options = 'Options cannot be empty.';
+      } else {
+        const trimmedOptions = newData.options.map((opt) => opt.trim());
+        const uniqueOptions = new Set(trimmedOptions);
+        if (uniqueOptions.size !== trimmedOptions.length) {
+          newErrors.options = 'Options must be unique.';
+        }
+      }
+    }
+
+    if (node.type === 'decision' && !newData.condition?.trim()) {
+      newErrors.condition = 'Condition is required.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSave = () => {
+    if (!validate(nodeData)) return;
     onUpdate(nodeData);
     setOriginalData(nodeData);
     setHasChanges(false);
@@ -110,6 +148,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                 }
                 className="min-h-24"
               />
+              {errors.message && (
+                <p className="text-sm text-red-500">{errors.message}</p>
+              )}
             </div>
           )}
 
@@ -125,6 +166,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   }
                   className="min-h-24"
                 />
+                {errors.question && (
+                  <p className="text-sm text-red-500">{errors.question}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -158,6 +202,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                     </Button>
                   </div>
                 ))}
+                {errors.options && (
+                  <p className="text-sm text-red-500">{errors.options}</p>
+                )}
               </div>
             </>
           )}
@@ -174,6 +221,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   }
                   className="min-h-24"
                 />
+                {errors.condition && (
+                  <p className="text-sm text-red-500">{errors.condition}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -223,6 +273,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   }
                   placeholder="Knowledge Title"
                 />
+                {errors.title && (
+                  <p className="text-sm text-red-500">{errors.title}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="content">Content</Label>
@@ -235,6 +288,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   className="min-h-24"
                   placeholder="Knowledge content..."
                 />
+                {errors.content && (
+                  <p className="text-sm text-red-500">{errors.content}</p>
+                )}
               </div>
             </>
           )}
@@ -251,6 +307,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   }
                   placeholder="Query, Insert, Update, etc."
                 />
+                {errors.operation && (
+                  <p className="text-sm text-red-500">{errors.operation}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="entity">Entity</Label>
@@ -262,6 +321,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   }
                   placeholder="Table or collection name"
                 />
+                {errors.entity && (
+                  <p className="text-sm text-red-500">{errors.entity}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="details">SQL/Query Details</Label>
@@ -273,7 +335,10 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   }
                   className="min-h-24 font-mono text-sm"
                   placeholder="SELECT * FROM users WHERE..."
-                />
+                />{' '}
+                {errors.details && (
+                  <p className="text-sm text-red-500">{errors.details}</p>
+                )}
               </div>
             </>
           )}
@@ -290,6 +355,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   }
                   placeholder="Department or team name"
                 />
+                {errors.destination && (
+                  <p className="text-sm text-red-500">{errors.destination}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="transferMessage">Message</Label>
@@ -302,6 +370,9 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
                   className="min-h-24"
                   placeholder="Transfer message..."
                 />
+                {errors.message && (
+                  <p className="text-sm text-red-500">{errors.message}</p>
+                )}
               </div>
             </>
           )}
