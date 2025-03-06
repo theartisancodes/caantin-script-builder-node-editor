@@ -1,3 +1,5 @@
+import {Edge} from "reactflow";
+
 export type NodeType =
   | 'greeting'
   | 'question'
@@ -89,3 +91,4 @@ export interface NodeData {
   details?: string;
   destination?: string;
 }
+

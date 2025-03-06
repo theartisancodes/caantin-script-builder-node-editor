@@ -1,4 +1,4 @@
-'use client';
+// in components/WorkflowEditor/NodePanelProperties/index.tsx
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '@ui/button';
@@ -310,7 +310,14 @@ const NodePropertiesPanel: React.FC<NodePropertiesPanelProps> = ({
 
       <div className="l absolute bottom-0 left-0 right-0 border-t border-border bg-background p-4">
         {hasChanges && (
-          <Button className="w-full" onClick={handleSave}>
+          <Button
+            className={`flex w-full items-center gap-1 ${
+              resolvedTheme === 'dark'
+                ? 'bg-primary-300 text-white hover:bg-primary-500'
+                : 'bg-primary-500 hover:bg-primary-300'
+            }`}
+            onClick={handleSave}
+          >
             Apply Changes
           </Button>
         )}

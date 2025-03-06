@@ -6,6 +6,7 @@ import ReactFlow, {
   Background,
   Connection,
   Controls,
+  Edge,
   MarkerType,
   NodeMouseHandler,
   NodeTypes,
@@ -18,11 +19,24 @@ import { Menu, X, ZoomIn } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import { useTheme } from 'next-themes';
 import NodePropertiesPanel from '@components/WorkflowEditor/NodePanelProperties';
-import { defaultNodeData, flowColors } from '@/constants';
+import SaveWorkFlow from '@components/WorkflowEditor/SaveWorkflow';
+import { defaultNodeData, flowColors, templateNodeData } from '@/constants';
 import NodePanel from './NodePanel';
 import Nodes from './Nodes';
+import TemplatesPanel from './TemplatesPanel';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { NodeData, NodeType } from '@/types';
+
+type WorkflowTemplate = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  nodes: ReactFlowNode[];
+  edges: Edge[];
+  connections?: { sourceNodeId: string; targetNodeId: string }[];
+};
 
 const nodeTypesMap: NodeTypes = {
   greeting: (props) => <Nodes {...props} type="greeting" />,
@@ -41,10 +55,11 @@ const WorkflowEditor = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode | null>(null);
-  const [showNodePanel, setShowNodePanel] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(true);
   const [showPropertiesPanel, setShowPropertiesPanel] = useState(false);
   const [showMobileControls, setShowMobileControls] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const [activeTab, setActiveTab] = useState('nodes');
 
   const getNodeColors = (type: NodeType, isDark: boolean) => {
     const colors = flowColors[type] || flowColors.greeting;
@@ -142,7 +157,7 @@ const WorkflowEditor = () => {
     setNodes((nds) => [...nds, newNode]);
 
     if (window.innerWidth < 768) {
-      setShowNodePanel(false);
+      setShowSidebar(false);
     }
   };
 
@@ -174,17 +189,54 @@ const WorkflowEditor = () => {
     setZoomLevel(zoom);
   };
 
+  const saveWorkflowAsTemplate = (
+    template: WorkflowTemplate
+  ): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      try {
+        console.log('Sending workflow template to backend:', template);
+        setActiveTab('templates');
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  const handleSelectTemplate = (template: WorkflowTemplate) => {
+    if (!template.nodes || !template.edges) {
+      const { nodes, edges } = templateNodeData(isDark);
+      const fullTemplateData = {
+        ...template,
+        nodes,
+        edges
+      };
+      setNodes(fullTemplateData.nodes);
+      setEdges(fullTemplateData.edges);
+    } else {
+      setNodes(template.nodes);
+      setEdges(template.edges);
+    }
+  };
   return (
     <div className="relative flex h-full w-full flex-col bg-background md:flex-row">
+      <div className="absolute right-6 top-6 z-10">
+        <SaveWorkFlow
+          nodes={nodes as ReactFlowNode[]}
+          edges={edges}
+          onSave={saveWorkflowAsTemplate}
+        />
+      </div>
+
       <div className="flex items-center justify-between border-b border-border p-2 md:hidden">
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setShowNodePanel(!showNodePanel)}
+          onClick={() => setShowSidebar(!showSidebar)}
           className="flex items-center gap-2"
         >
           <Menu size={16} />
-          {showNodePanel ? 'Hide' : 'Show'} Nodes
+          {showSidebar ? 'Hide' : 'Show'} Panel
         </Button>
 
         <div className="flex items-center gap-2">
@@ -212,27 +264,41 @@ const WorkflowEditor = () => {
 
       <div
         className={`${
-          showNodePanel
+          showSidebar
             ? 'max-h-64 overflow-y-auto md:max-h-full md:w-72'
             : 'max-h-0 overflow-hidden md:max-h-full md:w-0'
         } shrink-0 border-b border-border transition-all duration-300 md:border-b-0 md:border-r`}
       >
         <div className="flex items-center justify-between border-b border-border p-4">
-          <h3 className="font-semibold">Nodes</h3>
+          <h3 className="font-semibold">Workflow Builder</h3>
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setShowNodePanel(false)}
+            onClick={() => setShowSidebar(false)}
             className="md:hidden"
           >
             <X size={18} />
           </Button>
         </div>
-        <NodePanel onAddNode={addNodeToFlow} />
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="nodes">Nodes</TabsTrigger>
+            <TabsTrigger value="templates">Templates</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="nodes">
+            <NodePanel onAddNode={addNodeToFlow} />
+          </TabsContent>
+
+          <TabsContent value="templates">
+            <TemplatesPanel onSelectTemplate={handleSelectTemplate} />
+          </TabsContent>
+        </Tabs>
       </div>
 
       <div className="flex flex-1 flex-col md:h-full md:flex-row">
-        <div className="relative flex-1 overflow-hidden">
+        <div className="relative flex-1 overflow-hidden p-4">
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -243,7 +309,7 @@ const WorkflowEditor = () => {
             nodeTypes={nodeTypesMap}
             fitView
             proOptions={{ hideAttribution: true }}
-            className={`h-full w-full transition-colors ${isDark ? 'react-flow-dark' : 'react-flow-light'}`}
+            className={`h-full w-full rounded-md border border-border transition-colors ${isDark ? 'react-flow-dark' : 'react-flow-light'}`}
             onPaneClick={() => {
               setSelectedNode(null);
               setShowPropertiesPanel(false);

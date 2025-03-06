@@ -7,6 +7,7 @@ import {
   Info,
   MessageCircle
 } from 'lucide-react';
+import { MarkerType } from 'reactflow';
 
 export const sidebarLinks = [
   {
@@ -281,3 +282,167 @@ export const flowColors = {
     }
   }
 };
+
+export const templateNodeData = (isDark: boolean) => ({
+  nodes: [
+    {
+      id: 'y3eSwPtOOOnna13MhT8ki',
+      type: 'greeting',
+      position: {
+        x: -167.79409821080293,
+        y: -215.2885491879576
+      },
+      data: {
+        message:
+          "Hello, I'm calling from Caantin AI. Do you have a moment to discuss your business needs??",
+        nodeType: 'greeting',
+        isDark: isDark
+      },
+      style: {
+        background: isDark
+          ? flowColors.greeting.dark.background
+          : flowColors.greeting.light.background,
+        borderColor: isDark
+          ? flowColors.greeting.dark.border
+          : flowColors.greeting.light.border,
+        borderWidth: 1.5,
+        borderStyle: 'solid',
+        backgroundColor: isDark
+          ? flowColors.greeting.dark.background
+          : flowColors.greeting.light.background,
+        opacity: 0.8
+      },
+      width: 242,
+      height: 104
+    },
+    {
+      id: 'K7qi1zwoutcz2tQxPHg4e',
+      type: 'information',
+      position: {
+        x: -81.25109328375152,
+        y: 17.77526457476378
+      },
+      data: {
+        message:
+          'Great! We have solutions that can complement your existing AI implementations..',
+        nodeType: 'information',
+        isDark: isDark
+      },
+      style: {
+        background: isDark
+          ? flowColors.information.dark.background
+          : flowColors.information.light.background,
+        borderColor: isDark
+          ? flowColors.information.dark.border
+          : flowColors.information.light.border,
+        borderWidth: 1.5,
+        borderStyle: 'solid',
+        backgroundColor: isDark
+          ? flowColors.information.dark.background
+          : flowColors.information.light.background,
+        opacity: 0.8
+      },
+      width: 242,
+      height: 104
+    },
+    {
+      id: 'AUxJKvEpB64r-FNjweMhD',
+      type: 'decision',
+      position: {
+        x: 246.20253933385482,
+        y: -90.48553949896717
+      },
+      data: {
+        condition: 'Based on client budget considerations:',
+        options: [
+          'High budget (>$50k)',
+          'Medium budget ($10k-$50k)',
+          'Low budget (<$10k)'
+        ],
+        nodeType: 'decision',
+        isDark: isDark
+      },
+      style: {
+        background: isDark
+          ? flowColors.decision.dark.background
+          : flowColors.decision.light.background,
+        borderColor: isDark
+          ? flowColors.decision.dark.border
+          : flowColors.decision.light.border,
+        borderWidth: 1.5,
+        borderStyle: 'solid',
+        backgroundColor: isDark
+          ? flowColors.decision.dark.background
+          : flowColors.decision.light.background,
+        opacity: 0.8
+      },
+      width: 242,
+      height: 158
+    }
+  ],
+  edges: [
+    {
+      source: 'y3eSwPtOOOnna13MhT8ki',
+      sourceHandle: null,
+      target: 'K7qi1zwoutcz2tQxPHg4e',
+      targetHandle: null,
+      animated: true,
+      style: {
+        stroke: isDark ? '#4b5563' : '#94a3b8',
+        strokeWidth: 1.5
+      },
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: isDark ? '#4b5563' : '#94a3b8'
+      },
+      id: 'reactflow__edge-y3eSwPtOOOnna13MhT8ki-K7qi1zwoutcz2tQxPHg4e'
+    },
+    {
+      source: 'K7qi1zwoutcz2tQxPHg4e',
+      sourceHandle: null,
+      target: 'AUxJKvEpB64r-FNjweMhD',
+      targetHandle: null,
+      animated: true,
+      style: {
+        stroke: isDark ? '#4b5563' : '#94a3b8',
+        strokeWidth: 1.5
+      },
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: isDark ? '#4b5563' : '#94a3b8'
+      },
+      id: 'reactflow__edge-K7qi1zwoutcz2tQxPHg4e-AUxJKvEpB64r-FNjweMhD'
+    }
+  ],
+  connections: [
+    {
+      sourceNodeId: 'y3eSwPtOOOnna13MhT8ki',
+      targetNodeId: 'K7qi1zwoutcz2tQxPHg4e'
+    },
+    {
+      sourceNodeId: 'K7qi1zwoutcz2tQxPHg4e',
+      targetNodeId: 'AUxJKvEpB64r-FNjweMhD'
+    }
+  ]
+});
+
+export const templatesList = [
+  {
+    id: 'template1',
+    name: 'Customer Onboarding',
+    description: 'Standard onboarding flow for new customers',
+    createdAt: '2023-12-01'
+  },
+  {
+    id: 'template2',
+    name: 'Support Ticket',
+    description: 'Workflow for handling support requests',
+    createdAt: '2023-12-05'
+  },
+  {
+    id: 'template3',
+    name: 'Order Processing',
+    description: 'E-commerce order processing workflow',
+    createdAt: '2023-12-10'
+  }
+];

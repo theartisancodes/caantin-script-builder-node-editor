@@ -22,7 +22,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           }`}
         >
           {isWorkflowPage ? (
-            <div className="h-full w-full">{children}</div>
+            <div className="h-full w-full pr-6">{children}</div>
           ) : (
             <div className="mx-auto w-full max-w-5xl">{children}</div>
           )}
